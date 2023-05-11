@@ -628,6 +628,13 @@ int fswc_grab(fswebcam_config_t *config)
 		
 		if(!frame && config->dumpframe)
 		{
+			printf("Content-Type: image/jpg\r\n\r\n");
+			for (int i = 0; i < src.length; i++) {
+				putchar(((char*)(src.img))[i]);
+			}
+
+			exit(0);
+
 			/* Dump the raw data from the first frame to file. */
 			FILE *f;
 			
@@ -767,13 +774,13 @@ int fswc_grab(fswebcam_config_t *config)
 	if(config->overlay) free(config->overlay);
 	if(config->filename) free(config->filename);
 	
-	config->banner       = BOTTOM_BANNER;
+	config->banner       = NO_BANNER;
 	config->bg_colour    = 0x40263A93;
 	config->bl_colour    = 0x00FF0000;
 	config->fg_colour    = 0x00FFFFFF;
 	config->font         = strdup("sans");
 	config->fontsize     = 10;
-	config->shadow       = 1;
+	config->shadow       = 0;
 	config->title        = NULL;
 	config->subtitle     = NULL;
 	config->timestamp    = strdup("%Y-%m-%d %H:%M (%Z)");
@@ -1455,16 +1462,18 @@ int fswc_getopts(fswebcam_config_t *config, int argc, char *argv[])
 	config->timeout = 10;
 	config->use_read = 0;
 	config->list = 0;
-	config->width = 384;
-	config->height = 288;
-	config->fps = 0;
+	config->width = 2592;
+	config->height = 1944;
+	config->fps = 15;
 	config->frames = 1;
-	config->skipframes = 0;
+	config->skipframes = 10;
 	config->palette = SRC_PAL_ANY;
 	config->option = NULL;
-	config->dumpframe = NULL;
+	config->dumpframe = "/usr/cgi-bin/image.jpg";
 	config->jobs = 0;
 	config->job = NULL;
+	log_quiet(-1);
+	log_verbose(0);
 	
 	/* Don't report errors. */
 	opterr = 0;
