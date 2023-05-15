@@ -26,7 +26,8 @@ install: all
 	install -m 644 fswebcam.1.gz ${DESTDIR}${mandir}/man1
 
 fswebcam: $(OBJS)
-	$(CC) -o fswebcam $(OBJS) $(LDFLAGS)
+	#$(CC) -o fswebcam $(OBJS) $(LDFLAGS)
+	$(AR) -r fswebcam.a $(OBJS)
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
